@@ -6,10 +6,7 @@ addImagesToGlyphs
 
 takes a folder of bitmaps and loads them in their associated glyph window
 
-
-applyImageTransformToAll
-------------------------
-applies the matrix transform of the current glyph image to all images found in the current font 
+image names are expected to conform to the following pattern
 
 fileName, glyphName
 -------------------
@@ -21,3 +18,12 @@ UC-M, M
 num-2, two
 punct-ampersand, ampersand
 punct-comma, comma
+
+in other words "lc-a.tif" will be loaded in glyph "a"
+
+
+
+applyImageTransformToAll
+------------------------
+applies the matrix transform of the current glyph image to all images found in the current font 
+
