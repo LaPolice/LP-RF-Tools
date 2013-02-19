@@ -14,10 +14,8 @@ def extractKeyFromBaseName(basename):
 	return key
 
 def extractKeyFromNumber(basename):
-
 	key = None
 	num_re = re.compile("^num-(\d)$", re.IGNORECASE)
-
 	numbers = {"0": "zero", "1": "one", "2": "two", "3": "three", "4": "four",
 				"5": "five", "6": "six", "7": "seven", "8": "eight", "9":"nine"}
 
@@ -28,39 +26,36 @@ def extractKeyFromNumber(basename):
 
 	return key
 
-def extractKeyFromLowerCase(basename):
+def extractKeyFromBaseNameAndRegex(basename, regex):
 	key = None
-	num_re = re.compile("^lc-([a-z])$")
-
-	m = num_re.match(basename)
+	
+	m = regex.match(basename)
 
 	if m:
 		key = m.group(1)
 
 	return key
+
+def extractKeyFromLowerCase(basename):
+	
+	regex = re.compile("^lc-([a-z])$")
+
+	return extractKeyFromBaseNameAndRegex(basename, regex)
 
 def extractKeyFromUpperCase(basename):
-	key = None
-	num_re = re.compile("^UC-([A-Z])$")
+	
+	regex = re.compile("^UC-([A-Z])$")
 
-	m = num_re.match(basename)
-
-	if m:
-		key = m.group(1)
-
-	return key
+	return extractKeyFromBaseNameAndRegex(basename, regex)
 
 
 def extractKeyFromPunctuation(basename):
-	key = None
-	num_re = re.compile("^punct-([a-z]{2,})$")
+	
+	regex = re.compile("^punct-([a-z]{2,})$")
 
-	m = num_re.match(basename)
+	return extractKeyFromBaseNameAndRegex(basename, regex)
 
-	if m:
-		key = m.group(1)
-
-	return key
+	
 	
 
 
