@@ -36,13 +36,13 @@ def extractKeyFromBaseNameAndRegex(basename, regex):
 
 def extractKeyFromLowerCase(basename):
     
-    regex = re.compile("^lc-([a-z])$")
+    regex = re.compile("^lc-([a-z]{1,})$")
 
     return extractKeyFromBaseNameAndRegex(basename, regex)
 
 def extractKeyFromUpperCase(basename):
     
-    regex = re.compile("^UC-([A-Z])$")
+    regex = re.compile("^UC-([A-Z]{1,})$")
 
     return extractKeyFromBaseNameAndRegex(basename, regex)
 

@@ -12,7 +12,7 @@ import unittest
 
 class TestParseDirectory(unittest.TestCase):
 
-    fullPath = "/home/user/robo/images/"
+    fullPath = "/home/robo/images/"
 
     def test_itReturnsADictionary(self):
         result = parseFiles(self.fullPath, [])
@@ -32,32 +32,35 @@ class TestParseDirectory(unittest.TestCase):
         fileList = ["num-0.png",
                     "num-10.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"zero": "/home/user/robo/images/num-0.png"})
+        self.assertEquals(result, {"zero": "/home/robo/images/num-0.png"})
+    
         
-
+    # handling of punctuation can lead to introduction of invalid glyph names
     def test_itHandlesLowerCaseLetters(self):
         fileList = ["lc-b.png",
                     "lC-A.png",
-                    "lc-bob.png"]
+                    "lc-invalidglyphname.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"b": "/home/user/robo/images/lc-b.png"})
+        self.assertEquals(result, {"b": "/home/robo/images/lc-b.png",
+                                   "invalidglyphname": "/home/robo/images/lc-invalidglyphname.png"})
 
+    # handling of punctuation can lead to introduction of invalid glyph names
     def test_itHandlesUpperCaseLetters(self):
         fileList = ["UC-B.png",
                     "uC-C.png",
-                    "UC-BOB.png"]
+                    "UC-INVALIDGLYPHNAME.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"B": "/home/user/robo/images/UC-B.png"})
+        self.assertEquals(result, {"B": "/home/robo/images/UC-B.png",
+                                   "INVALIDGLYPHNAME": "/home/robo/images/UC-INVALIDGLYPHNAME.png"})
 
 
-    # handling of punctuation leads to introduction of invalid glyph names
-    # see bulubu
+    # handling of punctuation can lead to introduction of invalid glyph names
     def test_itHandlesPunctuation(self):
         fileList = ["punct-ampersand.png",
                     "punct-bulubu.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"ampersand": "/home/user/robo/images/punct-ampersand.png",
-                                    "bulubu": "/home/user/robo/images/punct-bulubu.png" })
+        self.assertEquals(result, {"ampersand": "/home/robo/images/punct-ampersand.png",
+                                    "bulubu": "/home/robo/images/punct-bulubu.png" })
 
 
 def main():
