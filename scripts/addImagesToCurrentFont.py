@@ -96,6 +96,9 @@ def addImages(currentFont, dictOfImages):
             print "invalid glyph name -> %s" % glyphName
             continue
 
+        # add image on layer "imported_images"
+
+        glyph = glyph.getLayer("imported_images")
         glyph.addImage(imagePath)
 
         if glyph.image:
