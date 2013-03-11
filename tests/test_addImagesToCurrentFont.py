@@ -30,9 +30,13 @@ class TestParseDirectory(unittest.TestCase):
 
     def test_itHandlesNumbers(self):
         fileList = ["num-0.png",
-                    "num-10.png"]
+                    "num-10.png",
+                    "num-zero.png",
+                    "num-FIVE.png",
+                    "num-four.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"zero": "/home/robo/images/num-0.png"})
+        self.assertEquals(result, {"zero": "/home/robo/images/num-zero.png",
+                                   "four": "/home/robo/images/num-four.png"})
     
         
     # handling of punctuation can lead to introduction of invalid glyph names
