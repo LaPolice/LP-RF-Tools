@@ -1,8 +1,6 @@
 
-import os, re, sys
+import os, re, sys, operator
 from os.path import join, isfile
-
-
 
 
 def extractKeyFromBaseName(basename):
@@ -28,22 +26,36 @@ def extractKeyFromBaseNameAndRegex(basename, regex):
     
     m = regex.match(basename)
 
-    if m:
-        key = m.group(1)
+    if m and len(m.groups()) > 0:
+        key = reduce(operator.add, m.groups())
+
 
     return key
 
 def extractKeyFromLowerCase(basename):
     
-    regex = re.compile("^lc-([a-z]{1,})$")
+    singleLetterRegex = re.compile("^lc-([a-z])$")
+    complexLetterRegex = re.compile("^lc-([a-z])-([a-z]{1,})$")
 
-    return extractKeyFromBaseNameAndRegex(basename, regex)
+    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
+
+    if key:
+        return key
+    else:
+        return extractKeyFromBaseNameAndRegex(basename, complexLetterRegex)
+
 
 def extractKeyFromUpperCase(basename):
     
-    regex = re.compile("^UC-([A-Z]{1,})$")
+    singleLetterRegex = re.compile("^UC-([A-Z])$")
+    complexLetterRegex = re.compile("^UC-([A-Z])-([a-z]{1,})$")
 
-    return extractKeyFromBaseNameAndRegex(basename, regex)
+    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
+
+    if key:
+        return key
+    else:
+        return extractKeyFromBaseNameAndRegex(basename, complexLetterRegex)
 
 
 def extractKeyFromPunctuation(basename):

@@ -11,11 +11,9 @@ image names are expected to conform to the following pattern
 fileName, glyphName
 -------------------
 lc-a, a
-lc-e, e
-lc-v, v
+lc-a-acute, aacute
 UC-B, B
-UC-M, M
-num-2, two
+num-two, two
 punct-ampersand, ampersand
 punct-comma, comma
 
