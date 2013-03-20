@@ -10,7 +10,8 @@ image names are expected to conform to the following pattern
 
 fileName, glyphName
 -------------------
-lc-a, a
+lc-a, a,
+lc-ae, ae
 lc-a-acute, aacute
 UC-B, B
 num-two, two

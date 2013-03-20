@@ -34,7 +34,7 @@ def extractKeyFromBaseNameAndRegex(basename, regex):
 
 def extractKeyFromLowerCase(basename):
     
-    singleLetterRegex = re.compile("^lc-([a-z])$")
+    singleLetterRegex = re.compile("^lc-([a-z]{1,2})$")
     complexLetterRegex = re.compile("^lc-([a-z])-([a-z]{1,})$")
 
     key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
