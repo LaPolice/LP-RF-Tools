@@ -91,8 +91,12 @@ def parseFiles(pathToDir, fileList):
 
     for basename, extension in invalidExtensionsRemoved:
         key = extractKeyFromBaseName(basename)
+
+        fullFileName = join(pathToDir, basename) + '.' + extension
         if key:
-            result[key] = join(pathToDir, basename) + '.' + extension
+            result[key] = fullFileName
+        else:
+            print "can't parse key for", fullFileName
     
 
 
