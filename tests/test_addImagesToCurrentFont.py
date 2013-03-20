@@ -56,10 +56,12 @@ class TestParseDirectory(unittest.TestCase):
         fileList = ["UC-B.png",
                     "uC-C.png",
                     "UC-INVALIDGLYPHNAME.png",
-                    "UC-A-acute.png"]
+                    "UC-A-acute.png",
+                    "UC-AE.tif"]
         result = parseFiles(self.fullPath, fileList)
         self.assertEquals(result, {"B": "/home/robo/images/UC-B.png",
-                                   "Aacute": "/home/robo/images/UC-A-acute.png"})
+                                   "Aacute": "/home/robo/images/UC-A-acute.png",
+                                   "AE": "/home/robo/images/UC-AE.tif"})
 
 
     # handling of punctuation can lead to introduction of invalid glyph names

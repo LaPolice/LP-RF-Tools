@@ -47,7 +47,7 @@ def extractKeyFromLowerCase(basename):
 
 def extractKeyFromUpperCase(basename):
     
-    singleLetterRegex = re.compile("^UC-([A-Z])$")
+    singleLetterRegex = re.compile("^UC-([A-Z]{1,2})$")
     complexLetterRegex = re.compile("^UC-([A-Z])-([a-z]{1,})$")
 
     key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
