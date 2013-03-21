@@ -2,6 +2,10 @@
 import os, re, sys, operator
 from os.path import join, isfile
 
+# list of custom glyph names
+# these glyphs will be added to the current font if images exist for them
+# modify this list to support your own custom glyph names
+customGlyphs = ["Dswash", "Mswash", "Pfswash"]
 
 def extractKeyFromBaseName(basename):
     key = None
@@ -109,8 +113,12 @@ def addImages(currentFont, dictOfImages):
         try:
             glyph = currentFont.getGlyph(glyphName)
         except:
-            print "invalid glyph name -> %s" % glyphName
-            continue
+            if glyphName in customGlyphs:
+                print "creating new glyph %s" % glyphName
+                glyph = currentFont.newGlyph(glyphName)
+            else:
+                print "invalid glyph name -> %s for path %s" % (glyphName, imagePath)
+                continue
 
         # add image on layer "imported_images"
 
