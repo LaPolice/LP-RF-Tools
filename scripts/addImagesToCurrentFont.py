@@ -64,7 +64,7 @@ def extractKeyFromUpperCase(basename):
 
 def extractKeyFromPunctuation(basename):
     
-    regex = re.compile("^punct-([a-zA-Z][a-z]{1,})$")
+    regex = re.compile("^punct-([a-z]{2,})$")
 
     return extractKeyFromBaseNameAndRegex(basename, regex)
 

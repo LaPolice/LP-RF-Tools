@@ -71,8 +71,7 @@ class TestParseDirectory(unittest.TestCase):
                     "punct-Dswash.png"]
         result = parseFiles(self.fullPath, fileList)
         self.assertEquals(result, {"ampersand": "/home/robo/images/punct-ampersand.png",
-                                    "bulubu": "/home/robo/images/punct-bulubu.png",
-                                    "Dswash": "/home/robo/images/punct-Dswash.png" })
+                                    "bulubu": "/home/robo/images/punct-bulubu.png" })
 
 
 def main():
