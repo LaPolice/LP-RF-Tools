@@ -65,13 +65,16 @@ class TestParseDirectory(unittest.TestCase):
 
 
     # handling of punctuation can lead to introduction of invalid glyph names
-    def test_itHandlesPunctuation(self):
-        fileList = ["punct-ampersand.png",
-                    "punct-bulubu.png",
-                    "punct-Dswash.png"]
+    def test_itHandlesEverythingElse(self):
+        fileList = ["a.tif",
+                    "ampersand.png",
+                    "bulubu.png",
+                    "Dswash.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"ampersand": "/home/robo/images/punct-ampersand.png",
-                                    "bulubu": "/home/robo/images/punct-bulubu.png" })
+        self.assertEquals(result, {"ampersand": "/home/robo/images/ampersand.png",
+                                    "bulubu": "/home/robo/images/bulubu.png",
+                                    "Dswash": "/home/robo/images/Dswash.png" })
+
 
 
 def main():

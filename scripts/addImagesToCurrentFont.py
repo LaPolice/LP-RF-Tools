@@ -7,10 +7,29 @@ from os.path import join, isfile
 # modify this list to support your own custom glyph names
 customGlyphs = ["Dswash", "Mswash", "Pfswash"]
 
-def extractKeyFromBaseName(basename):
+# handle UC lc and num
+def extractKeyFromCategorizedBaseNames(basename):
     key = None
-    key = extractKeyFromNumber(basename) or extractKeyFromLowerCase(basename) 
-    key = key or extractKeyFromUpperCase(basename) or extractKeyFromPunctuation(basename)
+    key = extractKeyFromNumber(basename) or extractKeyFromLowerCase(basename) or extractKeyFromUpperCase(basename) 
+    return key 
+
+# handle all except lc UC and num
+def extractKeyFromUnCategorizedBaseNames(basename):
+
+    regex = re.compile("^([a-zA-Z]{2,})$")
+
+    return extractKeyFromBaseNameAndRegex(basename, regex)
+
+
+def extractKeyFromBaseNameAndRegex(basename, regex):
+    key = None
+    
+    m = regex.match(basename)
+
+    if m and len(m.groups()) > 0:
+        key = reduce(operator.add, m.groups())
+
+
     return key
 
 def extractKeyFromNumber(basename):
@@ -25,16 +44,7 @@ def extractKeyFromNumber(basename):
 
     return key
 
-def extractKeyFromBaseNameAndRegex(basename, regex):
-    key = None
-    
-    m = regex.match(basename)
 
-    if m and len(m.groups()) > 0:
-        key = reduce(operator.add, m.groups())
-
-
-    return key
 
 def extractKeyFromLowerCase(basename):
     
@@ -94,7 +104,13 @@ def parseFiles(pathToDir, fileList):
     invalidExtensionsRemoved = filter(lambda (_, extension): extension.lower() in valid_extensions, fileInfos)
 
     for basename, extension in invalidExtensionsRemoved:
-        key = extractKeyFromBaseName(basename)
+        key = extractKeyFromCategorizedBaseNames(basename)
+        isCustom = False
+
+        if key == None:
+            key = extractKeyFromUnCategorizedBaseNames(basename)
+            if key: 
+                isCustom = True
 
         fullFileName = join(pathToDir, basename) + '.' + extension
         if key:
@@ -102,7 +118,6 @@ def parseFiles(pathToDir, fileList):
         else:
             print "can't parse key for", fullFileName
     
-
 
     return result
 
