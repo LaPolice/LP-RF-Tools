@@ -2,10 +2,6 @@
 import os, re, sys, operator
 from os.path import join, isfile
 
-# list of custom glyph names
-# these glyphs will be added to the current font if images exist for them
-# modify this list to support your own custom glyph names
-customGlyphs = ["Dswash", "Mswash", "Pfswash"]
 
 # handle UC lc and num
 def extractKeyFromCategorizedBaseNames(basename):
@@ -29,7 +25,6 @@ def extractKeyFromBaseNameAndRegex(basename, regex):
     if m and len(m.groups()) > 0:
         key = reduce(operator.add, m.groups())
 
-
     return key
 
 def extractKeyFromNumber(basename):
@@ -51,7 +46,7 @@ def extractKeyFromLowerCase(basename):
     singleLetterRegex = re.compile("^lc-([a-z]{1,2})$")
     complexLetterRegex = re.compile("^lc-([a-z])-([a-z]{1,})$")
 
-    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
+    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex) 
 
     if key:
         return key
@@ -70,14 +65,6 @@ def extractKeyFromUpperCase(basename):
         return key
     else:
         return extractKeyFromBaseNameAndRegex(basename, complexLetterRegex)
-
-
-def extractKeyFromPunctuation(basename):
-    
-    regex = re.compile("^punct-([a-z]{2,})$")
-
-    return extractKeyFromBaseNameAndRegex(basename, regex)
-
     
     
 
@@ -88,11 +75,12 @@ def extractKeyFromPunctuation(basename):
 # for all valid images in listing
 def parseFiles(pathToDir, fileList):
 
-    result = {}
+    categorizedKeys = {} # lc, UC and num
+
+    unCategorizedKeys = {} # everything else
 
 
-    # convert file names to (basename, extension)
-    # TODO extract
+    # convert file names to tuple -> (basename, extension, fullFileName)
     # TODO use dictionary or named tupple
     fileInfos = map (lambda fileName: ( os.path.splitext(os.path.basename(fileName))[0], 
                                         os.path.splitext(os.path.basename(fileName))[1][1:]),
@@ -104,46 +92,67 @@ def parseFiles(pathToDir, fileList):
     invalidExtensionsRemoved = filter(lambda (_, extension): extension.lower() in valid_extensions, fileInfos)
 
     for basename, extension in invalidExtensionsRemoved:
-        key = extractKeyFromCategorizedBaseNames(basename)
-        isCustom = False
-
-        if key == None:
-            key = extractKeyFromUnCategorizedBaseNames(basename)
-            if key: 
-                isCustom = True
-
         fullFileName = join(pathToDir, basename) + '.' + extension
+        key = extractKeyFromCategorizedBaseNames(basename)
+        
         if key:
-            result[key] = fullFileName
+            categorizedKeys[key] = fullFileName
         else:
-            print "can't parse key for", fullFileName
+            key = extractKeyFromUnCategorizedBaseNames(basename)
+
+            if key:
+                unCategorizedKeys[key] = fullFileName
+            else:
+                print "can't parse key for", fullFileName
     
 
-    return result
+    return categorizedKeys, unCategorizedKeys
 
 
+def warnOnGlyphCreation(newGlyphNames):
+    print "--------------------------------"
+    print "%i glyphs have been created" % len(newGlyphNames)
+    print "new glyphs:"
+    print "-----------"
+    for name in newGlyphNames:
+        print name
 
-def addImages(currentFont, dictOfImages):
-    for glyphName, imagePath in dictOfImages.items():
+def addImageToGlyph(imagePath, glyph):
+    # add image on layer "imported_images"
+
+    glyph = glyph.getLayer("imported_images")
+    glyph.addImage(imagePath)
+
+    if glyph.image:
+        print "image load succesful for glyph %s" % glyph.name 
+    else:
+        print "image load failed for glyph %s and path %s" % (glyph.name, imagePath)
+
+
+def addImages(currentFont, tupleOfDicts):
+    categorizedKeys, unCategorizedKeys = tupleOfDicts
+
+    newGlyphNames = []
+
+    for glyphName, imagePath in categorizedKeys.items():
         try:
             glyph = currentFont.getGlyph(glyphName)
         except:
-            if glyphName in customGlyphs:
-                print "creating new glyph %s" % glyphName
-                glyph = currentFont.newGlyph(glyphName)
-            else:
-                print "invalid glyph name -> %s for path %s" % (glyphName, imagePath)
-                continue
+            print "invalid glyph name -> %s for path %s" % (glyphName, imagePath)
+            continue
+        addImageToGlyph(imagePath, glyph)
 
-        # add image on layer "imported_images"
+    for glyphName, imagePath in unCategorizedKeys.items():
+        try:
+            glyph = currentFont.getGlyph(glyphName)
+        except:     
+            newGlyphNames.append(glyphName)
+            glyph = currentFont.newGlyph(glyphName)
+        addImageToGlyph(imagePath, glyph)
 
-        glyph = glyph.getLayer("imported_images")
-        glyph.addImage(imagePath)
+    if len(newGlyphNames) > 0:
+        warnOnGlyphCreation(newGlyphNames)
 
-        if glyph.image:
-            print "image load succesful for glyph %s" % glyphName 
-        else:
-            print "image load failed for glyph %s and path %s" % (glyphName, imagePath)
 
 def main():
     currentFont = CurrentFont()

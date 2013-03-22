@@ -14,10 +14,17 @@ class TestParseDirectory(unittest.TestCase):
 
     fullPath = "/home/robo/images/"
 
-    def test_itReturnsADictionary(self):
+    def test_itReturnsATuple(self):
         result = parseFiles(self.fullPath, [])
-        self.assertTrue( isinstance(parseFiles(self.fullPath,[]), 
-                                    dict))
+        self.assertTrue( isinstance(result, tuple))
+
+    def test_returnedTupleHasADictionaryAsFirstValue(self):
+        result = parseFiles(self.fullPath, [])
+        self.assertTrue( isinstance(result[0], dict))
+
+    def test_returnedTupleHasADictionaryAsSecondValue(self):
+        result = parseFiles(self.fullPath, [])
+        self.assertTrue( isinstance(result[1], dict))
 
 
     def test_itFiltersInvalidFileExtensions(self):
@@ -25,7 +32,7 @@ class TestParseDirectory(unittest.TestCase):
     				"lc-a.doc",
     				"lc-a.ai"]
     	result = parseFiles(self.fullPath, fileList)
-    	self.assertEquals(len(result), 0)
+    	self.assertEquals(len(result[0]) + len(result[1]), 0)
 
 
     def test_itHandlesNumbers(self):
@@ -35,7 +42,7 @@ class TestParseDirectory(unittest.TestCase):
                     "num-FIVE.png",
                     "num-four.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"zero": "/home/robo/images/num-zero.png",
+        self.assertEquals(result[0], {"zero": "/home/robo/images/num-zero.png",
                                    "four": "/home/robo/images/num-four.png"})
     
         
@@ -47,7 +54,7 @@ class TestParseDirectory(unittest.TestCase):
                     "lc-a-acute.png",
                     "lc-ae.tif"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"b": "/home/robo/images/lc-b.png",
+        self.assertEquals(result[0], {"b": "/home/robo/images/lc-b.png",
                                     "aacute": "/home/robo/images/lc-a-acute.png",
                                     "ae": "/home/robo/images/lc-ae.tif"})
 
@@ -59,7 +66,7 @@ class TestParseDirectory(unittest.TestCase):
                     "UC-A-acute.png",
                     "UC-AE.tif"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"B": "/home/robo/images/UC-B.png",
+        self.assertEquals(result[0], {"B": "/home/robo/images/UC-B.png",
                                    "Aacute": "/home/robo/images/UC-A-acute.png",
                                    "AE": "/home/robo/images/UC-AE.tif"})
 
@@ -71,7 +78,7 @@ class TestParseDirectory(unittest.TestCase):
                     "bulubu.png",
                     "Dswash.png"]
         result = parseFiles(self.fullPath, fileList)
-        self.assertEquals(result, {"ampersand": "/home/robo/images/ampersand.png",
+        self.assertEquals(result[1], {"ampersand": "/home/robo/images/ampersand.png",
                                     "bulubu": "/home/robo/images/bulubu.png",
                                     "Dswash": "/home/robo/images/Dswash.png" })
 
