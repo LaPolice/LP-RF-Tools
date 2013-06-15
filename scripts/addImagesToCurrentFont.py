@@ -71,7 +71,10 @@ def extractKeyFromUpperCase(basename):
 
 # parseFiles:
 # given a list of files (fullpath string representation)
-# return a dictionary where key is glyph name and value is full path to image
+# return a tuple of 2 dictionaries, 
+# one for "categorized" glyphs (lc, UC and num)
+# and one for everything else (punctuation special characters)
+# dictionaries map robofont glyph names to full path of image
 # for all valid images in listing
 def parseFiles(pathToDir, fileList):
 

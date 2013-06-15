@@ -1,36 +1,69 @@
+# laPolice robofont scripts
 
-
-addImagesToGlyphs
-=================
+## addImagesToCurrentGlyph
 
 takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window
 
-the script operates on the current font. On execution, a folder requester is presented to allow the user to point to the location of the images to be imported.
+the script operates on the current font. On execution, a folder requester is opened to allow the user to point to the location of the images to be imported.
 
-Each filename should correspond to a standard robofont glyphName.
-The following pattern is expected:
+The image files should be named as follows.
 
-fileName -> glyphName
--------------------
-lc-a -> a
-lc-ae -> ae
-lc-a-acute -> aacute
-UC-B -> B
-num-two -> two
-punct-ampersand -> ampersand
-punct-comma -> comma
-punct-Dswash -> Dswash
+Lower case letters are prefixed with "lc-".
+Upper case letters are prefixed with "UC-".
+digits (0-9) are prefixed with "num-".
+Punctuation and special characters take no prefix.
+In other words, a file named "lc-a.tif" will be loaded in glyph "a".
 
-in other words "lc-a.tif" will be loaded in glyph "a"
+<table>
+    <tr>
+        <th>filename</th>
+        <th>glyphname</th>
+    </tr>
+    <tr>
+        <td>lc-a</td>
+        <td>a</td>
+    </tr>
+    <tr>
+        <td>lc-ae</td>
+        <td>ae</td>
+    </tr>
+    <tr>
+        <td>lc-a-acute</td>
+        <td>aacute</td>
+    </tr>
+    <tr>
+        <td>UC-B</td>
+        <td>B</td>
+    </tr>
+    <tr>
+        <td>num-two</td>
+        <td>two</td>
+    </tr>
+    <tr>
+        <td>comma</td>
+        <td>comma</td>
+    </tr>
+    <tr>
+        <td>Dswash</td>
+        <td>Dswash</td>
+    </tr>
+</table>
+ 
 
-the script expects the glyphNames to be identical to the standard robofont glyphNames.
-
-To import custom glyphs that are not in this set, you must edit the script and add your own glyphNames to the "customGlyphs" list (top of script). The script will create these custom glyphs providing they have an associated image.
+The images are imported on a layer named "imported_images"
 
 
 
-applyImageTransformToAll
-========================
+
+## applyImageTransformToAll
 
 applies the matrix transform of the current glyph image to all images found in the current font 
+works on layer 
+
+# license
+
+Distributed under the MIT license.
+
+Modify as you like. Use at your own risk.
+
 

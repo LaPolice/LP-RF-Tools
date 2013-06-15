@@ -43,22 +43,23 @@ class TestParseDirectory(unittest.TestCase):
                     "num-four.png"]
         result = parseFiles(self.fullPath, fileList)
         self.assertEquals(result[0], {"zero": "/home/robo/images/num-zero.png",
-                                   "four": "/home/robo/images/num-four.png"})
+                                      "four": "/home/robo/images/num-four.png"})
     
-        
-    # handling of punctuation can lead to introduction of invalid glyph names
+    # not strict on two letter combinations
     def test_itHandlesLowerCaseLetters(self):
         fileList = ["lc-b.png",
                     "lC-A.png",
                     "lc-invalidglyphname.png",
                     "lc-a-acute.png",
-                    "lc-ae.tif"]
+                    "lc-ae.tif",
+                    "lc-ui.tif"]
         result = parseFiles(self.fullPath, fileList)
         self.assertEquals(result[0], {"b": "/home/robo/images/lc-b.png",
                                     "aacute": "/home/robo/images/lc-a-acute.png",
-                                    "ae": "/home/robo/images/lc-ae.tif"})
+                                    "ae": "/home/robo/images/lc-ae.tif",
+                                    "ui": "/home/robo/images/lc-ui.tif"})
 
-    # handling of punctuation can lead to introduction of invalid glyph names
+    # not strict on two letter combinations
     def test_itHandlesUpperCaseLetters(self):
         fileList = ["UC-B.png",
                     "uC-C.png",
@@ -71,7 +72,7 @@ class TestParseDirectory(unittest.TestCase):
                                    "AE": "/home/robo/images/UC-AE.tif"})
 
 
-    # handling of punctuation can lead to introduction of invalid glyph names
+    # handling of punctuation can lead to introduction of non standard glyph names
     def test_itHandlesEverythingElse(self):
         fileList = ["a.tif",
                     "ampersand.png",
