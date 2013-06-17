@@ -1,35 +1,0 @@
-Après avoir renommé les calques de mon document Photoshop suite à notre discussion. Les UC, qui ne s’importaient pas avant, s’importent maintenant. Par contre les chiffes num ne s’importent toujours pas. Au bas de ce document, tu trouveras la liste des 157 images avec la nomination finale que j’importe.
-
-Voici le log de l’import pour les erreurs:
-invalid glyph name -> quotedblright
-invalid glyph name -> OE
-invalid glyph name -> dagger
-invalid glyph name -> number
-invalid glyph name -> oe
-invalid glyph name -> ij scre
-
-Ces glyphes n’existent pas dans l’encodage de base d’un nouveau document.
-Par contre je remarque que certains glyphes qui n’existent pas, par ex. Pfswash, Dswash, Mswash ne sont pas signalés comme invalides.
-
-J’ai réfléchi à l’ajout d’une section supplémentaire, par ex. symbole (sym) ou miscellanous (misc), je crois que cela complique car il faut savoir ce qui est considéré comme ponctuation. Faisons simple, la ponctuation et le reste sous punct.
-
-p1
-11.03.2013
-- permettre l’import des chiffres (num)
-- gérer la séparation entre le nom de la lettre et celui de l’accent, par ex. lc-a-acute devient aacute
-- ajout des glyphes spéciaux comme nouveau glyphe, sans unicode, nommé comme le fichier image, par ex. Pfswash
-
-p2
-11.03.2013
-- ajout d’un calque nommé imported_images et import sur ce calque
-
-p3
-11.03.2013
-- 
-
-
-Pour info, l’encodage Latin-1 de base de RF:
-space exclam quotesingle quotedbl numbersign dollar percent ampersand parenleft parenright asterisk plus comma hyphen period slash zero one two three four five six seven eight nine colon semicolon less equal greater question at A B C D E F G H I J K L M N O P Q R S T U V W X Y Z bracketleft backslash bracketright asciicircum underscore grave a b c d e f g h i j k l m n o p q r s t u v w x y z braceleft bar braceright asciitilde exclamdown cent sterling currency yen brokenbar section dieresis copyright ordfeminine guillemotleft logicalnot registered macron degree plusminus twosuperior threesuperior acute mu paragraph periodcentered cedilla onesuperior ordmasculine guillemotright onequarter onehalf threequarters questiondown Agrave Aacute Acircumflex Atilde Adieresis Aring AE Ccedilla Egrave Eacute Ecircumflex Edieresis Igrave Iacute Icircumflex Idieresis Eth Ntilde Ograve Oacute Ocircumflex Otilde Odieresis multiply Oslash Ugrave Uacute Ucircumflex Udieresis Yacute Thorn germandbls agrave aacute acircumflex atilde adieresis aring ae ccedilla egrave eacute ecircumflex edieresis igrave iacute icircumflex idieresis eth ntilde ograve oacute ocircumflex otilde odieresis divide oslash ugrave uacute ucircumflex udieresis yacute thorn ydieresis dotlessi circumflex caron breve dotaccent ring ogonek tilde hungarumlaut quoteleft quoteright minus
-
-images to import 11.03.2013
-lc-a-acute.tiflc-a-circumflex.tiflc-a-dieresis.tiflc-a-grave.tiflc-a-ring.tiflc-a-tilde.tiflc-a.tiflc-ae.tiflc-b.tiflc-c-cedilla.tiflc-c.tiflc-d.tiflc-e-acute.tiflc-e-circumflex.tiflc-e-dieresis.tiflc-e-grave.tiflc-e.tiflc-f.tiflc-g.tiflc-h.tiflc-i-acute.tiflc-i-circumflex.tiflc-i-dieresis.tiflc-i-grave.tiflc-i.tiflc-ij.tiflc-j.tiflc-k.tiflc-l.tiflc-m.tiflc-n-tilde.tiflc-n.tiflc-o-acute.tiflc-o-circumflex.tiflc-o-dieresis.tiflc-o-grave.tiflc-o-slash.tiflc-o-tilde.tiflc-o.tiflc-oe.tiflc-p.tiflc-q.tiflc-r.tiflc-s.tiflc-t.tiflc-u-acute.tiflc-u-circumflex.tiflc-u-dieresis.tiflc-u-grave.tiflc-u.tiflc-v.tiflc-w.tiflc-x.tiflc-y.tiflc-z.tifnum-eight.tifnum-five.tifnum-four.tifnum-nine.tifnum-one.tifnum-seven.tifnum-six.tifnum-three.tifnum-two.tifnum-zero.tifpunct-ampersand.tifpunct-asterisk.tifpunct-bracketleft.tifpunct-bracketright.tifpunct-colon.tifpunct-comma.tifpunct-dagger.tifpunct-dollar.tifpunct-Dswash.tifpunct-equal.tifpunct-exclam.tifpunct-guillemotleft.tifpunct-guillemotright.tifpunct-hyphen.tifpunct-Mswash.tifpunct-multiply.tifpunct-number.tifpunct-numbersign.tifpunct-onehalf.tifpunct-onequarter.tifpunct-ordfeminine.tifpunct-ordmasculine.tifpunct-parenleft.tifpunct-parenright.tifpunct-percent.tifpunct-period.tifpunct-periodcentered.tifpunct-Pfswash.tifpunct-plus.tifpunct-question.tifpunct-quotedbl.tifpunct-quotedblright.tifpunct-section.tifpunct-semicolon.tifpunct-slash.tifpunct-sterling.tifpunct-threequarters.tifUC-A-acute.tifUC-A-circumflex.tifUC-A-dieresis.tifUC-A-grave.tifUC-A-ring.tifUC-A-tilde.tifUC-A.tifUC-AE.tifUC-B.tifUC-C-cedilla.tifUC-C.tifUC-D.tifUC-E-acute.tifUC-E-circumflex.tifUC-E-dieresis.tifUC-E-grave.tifUC-E.tifUC-F.tifUC-G.tifUC-germandbls.tifUC-H.tifUC-I-acute.tifUC-I-cimrcumflex.tifUC-I-dieresis.tifUC-I-grave.tifUC-I.tifUC-J.tifUC-K.tifUC-L.tifUC-M.tifUC-N-tilde.tifUC-N.tifUC-O-acute.tifUC-O-circumflex.tifUC-O-dieresis.tifUC-O-grave.tifUC-O-slash.tifUC-O-tilde.tifUC-O.tifUC-OE.tifUC-P.tifUC-Q.tifUC-R.tifUC-S.tifUC-T.tifUC-U-acute.tifUC-U-circumflex.tifUC-U-dieresis.tifUC-U-grave.tifUC-U.tifUC-V.tifUC-W.tifUC-X.tifUC-Y.tifUC-Z.tif

@@ -1,9 +1,9 @@
 import sys, os
 
 # add scripts dir to sys.path
-scripts_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'scripts'))
+script_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'addImagesToCurrentFont'))
 
-sys.path.append(scripts_dir)
+sys.path.append(script_dir)
 
 from addImagesToCurrentFont import parseFiles
 import unittest

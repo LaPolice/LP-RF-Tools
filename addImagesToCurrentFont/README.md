@@ -1,6 +1,4 @@
-# laPolice robofont scripts
-
-## addImagesToCurrentGlyph
+# addImagesToCurrentGlyph
 
 takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window
 
@@ -51,19 +49,3 @@ In other words, a file named "lc-a.tif" will be loaded in glyph "a".
  
 
 The images are imported on a layer named "imported_images"
-
-
-
-
-## applyImageTransformToAll
-
-applies the matrix transform of the current glyph image to all images found in the current font 
-works on layer 
-
-# license
-
-Distributed under the MIT license.
-
-Modify as you like. Use at your own risk.
-
-
