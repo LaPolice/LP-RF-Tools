@@ -1,6 +1,6 @@
 # addImagesToCurrentGlyph
 
-takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window
+takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window.
 
 the script operates on the current font. On execution, a folder requester is opened to allow the user to point to the location of the images to be imported.
 
@@ -48,4 +48,4 @@ In other words, a file named "lc-a.tif" will be loaded in glyph "a".
 </table>
  
 
-The images are imported on a layer named "imported_images"
+The images are imported on a layer named "imported_images".
