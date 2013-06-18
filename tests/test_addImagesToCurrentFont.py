@@ -5,7 +5,7 @@ script_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'ad
 
 sys.path.append(script_dir)
 
-from addImagesToCurrentFont import parseFiles
+from LP_addImagesToCurrentFont import parseFiles
 import unittest
 
 
