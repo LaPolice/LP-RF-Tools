@@ -4,7 +4,7 @@ takes a folder of bitmaps (jpg, tif or png) and loads them in their associated g
 
 the script operates on the current font. On execution, a folder requester is opened to allow the user to point to the location of the images to be imported.
 
-The image files should be named as follows.
+The image files should be named as follows:
 
 Lower case letters are prefixed with "lc-".
 Upper case letters are prefixed with "UC-".
