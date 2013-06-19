@@ -3,14 +3,16 @@ import os, re, sys, operator
 from os.path import join, isfile
 
 
-# handle UC lc and num
-def extractKeyFromCategorizedBaseNames(basename):
+def extractKeyFromBaseName(basename):
     key = None
-    key = extractKeyFromNumber(basename) or extractKeyFromLowerCase(basename) or extractKeyFromUpperCase(basename) 
+    key = (extractKeyFromNumber(basename) or 
+        extractKeyFromLowerCase(basename) or
+        extractKeyFromUpperCase(basename) or
+        extractKeyFromUnPrefixed(basename)) 
     return key 
 
 # handle all except lc UC and num
-def extractKeyFromUnCategorizedBaseNames(basename):
+def extractKeyFromUnPrefixed(basename):
 
     regex = re.compile("^([a-zA-Z]{2,})$")
 
@@ -78,9 +80,7 @@ def extractKeyFromUpperCase(basename):
 # for all valid images in listing
 def parseFiles(pathToDir, fileList):
 
-    categorizedKeys = {} # lc, UC and num
-
-    unCategorizedKeys = {} # everything else
+    result = {} # lc, UC and num
 
 
     # convert file names to tuple -> (basename, extension, fullFileName)
@@ -96,20 +96,14 @@ def parseFiles(pathToDir, fileList):
 
     for basename, extension in invalidExtensionsRemoved:
         fullFileName = join(pathToDir, basename) + '.' + extension
-        key = extractKeyFromCategorizedBaseNames(basename)
+        key = extractKeyFromBaseName(basename)
         
         if key:
-            categorizedKeys[key] = fullFileName
+            result[key] = fullFileName
         else:
-            key = extractKeyFromUnCategorizedBaseNames(basename)
-
-            if key:
-                unCategorizedKeys[key] = fullFileName
-            else:
-                print "can't parse key for", fullFileName
+            print "can't parse glyph name for", fullFileName
     
-
-    return categorizedKeys, unCategorizedKeys
+    return result
 
 
 def warnOnGlyphCreation(newGlyphNames):
@@ -132,20 +126,11 @@ def addImageToGlyph(imagePath, glyph):
         print "image load failed for glyph %s and path %s" % (glyph.name, imagePath)
 
 
-def addImages(currentFont, tupleOfDicts):
-    categorizedKeys, unCategorizedKeys = tupleOfDicts
+def addImages(currentFont, dictOfImages):
 
     newGlyphNames = []
 
-    for glyphName, imagePath in categorizedKeys.items():
-        try:
-            glyph = currentFont.getGlyph(glyphName)
-        except:
-            print "invalid glyph name -> %s for path %s" % (glyphName, imagePath)
-            continue
-        addImageToGlyph(imagePath, glyph)
-
-    for glyphName, imagePath in unCategorizedKeys.items():
+    for glyphName, imagePath in dictOfImages.items():
         try:
             glyph = currentFont.getGlyph(glyphName)
         except:     
