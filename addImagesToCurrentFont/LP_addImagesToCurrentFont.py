@@ -2,88 +2,84 @@
 import os, re, sys, operator
 from os.path import join, isfile
 
-
-def extractKeyFromBaseName(basename):
-    key = None
-    key = (extractKeyFromNumber(basename) or 
-        extractKeyFromLowerCase(basename) or
-        extractKeyFromUpperCase(basename) or
-        extractKeyFromUnPrefixed(basename)) 
-    return key 
+# TODO: simplify file key parsing
+def extractGlyphNameFromBaseName(basename):
+    glyphName = None
+    glyphName = (extractGlyphNameFromNumber(basename) or 
+                 extractGlyphNameFromLowerCase(basename) or
+                 extractGlyphNameFromUpperCase(basename) or
+                 extractGlyphNameFromUnPrefixed(basename)) 
+    return glyphName 
 
 # handle all except lc UC and num
-def extractKeyFromUnPrefixed(basename):
+def extractGlyphNameFromUnPrefixed(basename):
 
     regex = re.compile("^([a-zA-Z]{2,})$")
 
-    return extractKeyFromBaseNameAndRegex(basename, regex)
+    return extractGlyphNameFromBaseNameAndRegex(basename, regex)
 
 
-def extractKeyFromBaseNameAndRegex(basename, regex):
-    key = None
+def extractGlyphNameFromBaseNameAndRegex(basename, regex):
+    glyphName = None
     
     m = regex.match(basename)
 
     if m and len(m.groups()) > 0:
-        key = reduce(operator.add, m.groups())
+        glyphName = reduce(operator.add, m.groups())
 
-    return key
+    return glyphName
 
-def extractKeyFromNumber(basename):
-    key = None
+def extractGlyphNameFromNumber(basename):
+    glyphName = None
     num_re = re.compile("^num-([a-z]{3,})$", re.IGNORECASE)
     numbers = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
     m = num_re.match(basename)
 
     if m and m.group(1) in numbers:
-        key = m.group(1)
+        glyphName = m.group(1)
 
-    return key
+    return glyphName
 
 
 
-def extractKeyFromLowerCase(basename):
+def extractGlyphNameFromLowerCase(basename):
     
     singleLetterRegex = re.compile("^lc-([a-z]{1,2})$")
     complexLetterRegex = re.compile("^lc-([a-z])-([a-z]{1,})$")
 
-    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex) 
+    glyphName = extractGlyphNameFromBaseNameAndRegex(basename, singleLetterRegex) 
 
-    if key:
-        return key
+    if glyphName:
+        return glyphName
     else:
-        return extractKeyFromBaseNameAndRegex(basename, complexLetterRegex)
+        return extractGlyphNameFromBaseNameAndRegex(basename, complexLetterRegex)
 
 
-def extractKeyFromUpperCase(basename):
+def extractGlyphNameFromUpperCase(basename):
     
     singleLetterRegex = re.compile("^UC-([A-Z]{1,2})$")
     complexLetterRegex = re.compile("^UC-([A-Z])-([a-z]{1,})$")
 
-    key = extractKeyFromBaseNameAndRegex(basename, singleLetterRegex)
+    glyphName = extractGlyphNameFromBaseNameAndRegex(basename, singleLetterRegex)
 
-    if key:
-        return key
+    if glyphName:
+        return glyphName
     else:
-        return extractKeyFromBaseNameAndRegex(basename, complexLetterRegex)
+        return extractGlyphNameFromBaseNameAndRegex(basename, complexLetterRegex)
     
     
 
 
-# parseFiles:
-# given a list of files (fullpath string representation)
-# return a tuple of 2 dictionaries, 
-# one for "categorized" glyphs (lc, UC and num)
-# and one for everything else (punctuation special characters)
-# dictionaries map robofont glyph names to full path of image
-# for all valid images in listing
+
 def parseFiles(pathToDir, fileList):
+    """given a list of files (fullpath string representation)
+    return a dictionary which maps robofont glyph names to full path of image
+    for all valid images in listing"""
 
-    result = {} # lc, UC and num
+    result = {} 
 
-
-    # convert file names to tuple -> (basename, extension, fullFileName)
+    # convert file names to tuple -> (basename, extension)
     # TODO use dictionary or named tupple
     fileInfos = map (lambda fileName: ( os.path.splitext(os.path.basename(fileName))[0], 
                                         os.path.splitext(os.path.basename(fileName))[1][1:]),
@@ -96,10 +92,10 @@ def parseFiles(pathToDir, fileList):
 
     for basename, extension in invalidExtensionsRemoved:
         fullFileName = join(pathToDir, basename) + '.' + extension
-        key = extractKeyFromBaseName(basename)
+        glyphName = extractGlyphNameFromBaseName(basename)
         
-        if key:
-            result[key] = fullFileName
+        if glyphName:
+            result[glyphName] = fullFileName
         else:
             print "can't parse glyph name for", fullFileName
     
@@ -115,7 +111,7 @@ def warnOnGlyphCreation(newGlyphNames):
         print name
 
 def addImageToGlyph(imagePath, glyph):
-    # add image on layer "imported_images"
+    """ adds image on layer named imported_images"""
 
     glyph = glyph.getLayer("imported_images")
     glyph.addImage(imagePath)
