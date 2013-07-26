@@ -9,19 +9,43 @@ def extractCharset(text):
         charset.add(char)
 
     filteredCharset = filter(lambda c: c != u'\n' and c != u' ', charset)
-    print filteredCharset
     return filteredCharset
 
-def applyCharsetToCurrentFont(charset):
+def buildDictFromUnicodeToGlyphname():
+    "HACK: builds a dict from unicode to glyphnames"
+    latin_1_set = mojo.UI.getCharacterSets()['Latin-1']
+    font = NewFont()
+    result = {}
+    for glyphName in latin_1_set:
+        glyph = font.getGlyph(glyphName)
+        result[glyph.unicode] = glyphName
+    font.close(False)
+    return result
+
+def applyCharsetToFont(font, charset):
+    unhandledCharacters = []
+
+    unicodeGlyphNamesDict = buildDictFromUnicodeToGlyphname()
 
     for c in charset:
-        g = CurrentFont().newGlyph(c)
-        g.unicode = ord(c)
+        c_int = ord(c)
+        if c_int in unicodeGlyphNamesDict:
+            glyph = font.getGlyph(unicodeGlyphNamesDict[c_int])
+            glyph.mark = (0,0,1,1)
+        else:
+            unhandledCharacters.append(c)
+    
+    return unhandledCharacters
 
 
 def textCharsetToCurrentFont():
     charset = extractCharset(window.textEditor.get())
-    applyCharsetToCurrentFont(charset)
+    unhandledCharacters = applyCharsetToFont(CurrentFont(), charset)
+    print "total unique characters", len(charset)
+    if len(unhandledCharacters) > 0:
+        print "this script only handles character defined in the default Latin-1 charset:"
+        print "following characters will have to be added by hand"
+        print unhandledCharacters
     
 def onSubmit(sender):
     textCharsetToCurrentFont()
