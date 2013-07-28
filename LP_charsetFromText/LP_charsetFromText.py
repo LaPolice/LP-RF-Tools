@@ -31,8 +31,10 @@ def applyCharsetToFont(font, charset):
         c_int = ord(c)
         if c_int in unicodeGlyphNamesDict:
             glyph = font.getGlyph(unicodeGlyphNamesDict[c_int])
-            glyph.mark = (0,0,1,1)
+            glyph.mark = (0,1, 0.2,1)
         else:
+            glyph = font.newGlyph("%r" % c)
+            glyph.mark = (1, 0, 0, 1)
             unhandledCharacters.append(c)
     
     return unhandledCharacters
@@ -41,10 +43,10 @@ def applyCharsetToFont(font, charset):
 def textCharsetToFont(font):
     charset = extractCharset(window.textEditor.get())
     unhandledCharacters = applyCharsetToFont(font, charset)
+    print "-------------"
     print "total unique characters", len(charset)
     if len(unhandledCharacters) > 0:
-        print "this script only handles character defined in the default Latin-1 charset:"
-        print "following characters will have to be added by hand"
+        print "characters marked in red are not in the latin-1 set, you must rename them appropriately"
         print unhandledCharacters
     
 def onSubmit(sender):
