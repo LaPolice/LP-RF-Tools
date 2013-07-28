@@ -1,7 +1,7 @@
 import sys, os
 
 # add scripts dir to sys.path
-script_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'addImagesToCurrentFont'))
+script_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'LP_addImagesToCurrentFont'))
 
 sys.path.append(script_dir)
 
