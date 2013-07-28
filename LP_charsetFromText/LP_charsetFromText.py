@@ -38,9 +38,9 @@ def applyCharsetToFont(font, charset):
     return unhandledCharacters
 
 
-def textCharsetToCurrentFont():
+def textCharsetToFont(font):
     charset = extractCharset(window.textEditor.get())
-    unhandledCharacters = applyCharsetToFont(CurrentFont(), charset)
+    unhandledCharacters = applyCharsetToFont(font, charset)
     print "total unique characters", len(charset)
     if len(unhandledCharacters) > 0:
         print "this script only handles character defined in the default Latin-1 charset:"
@@ -48,7 +48,11 @@ def textCharsetToCurrentFont():
         print unhandledCharacters
     
 def onSubmit(sender):
-    textCharsetToCurrentFont()
+    currentFont = CurrentFont()
+    if currentFont is not None:
+        textCharsetToFont(currentFont)
+    else:
+        print "there is no current font, operation aborted" 
     
 
 window = vanilla.Window((400, 400),"paste text into box and press submit", minSize=(100, 100))
