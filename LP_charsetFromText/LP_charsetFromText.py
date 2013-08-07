@@ -17,8 +17,13 @@ def buildDictFromUnicodeToGlyphname():
     font = NewFont()
     result = {}
     for glyphName in latin_1_set:
-        glyph = font.getGlyph(glyphName)
-        result[glyph.unicode] = glyphName
+        try:
+            glyph = font.getGlyph(glyphName)
+        except:
+            glyph = None
+            
+        if glyph != None:
+            result[glyph.unicode] = glyphName
     font.close(False)
     return result
 
