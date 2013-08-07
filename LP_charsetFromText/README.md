@@ -11,7 +11,7 @@ step 1.
 open a new font
 
 step 2.
-run the script and paste the text to parse in the text area
+run the script and paste the text to parse in the text area. The text is expected to be utf-8 encoded.
 
 step 3.
 press submit
