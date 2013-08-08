@@ -1,9 +1,11 @@
 # LP_charsetFromText.py
 
-extracts the set of characters in use in a text, and marks all occurrences in a new font page.
-Also returns a count of the set.
+extracts the set of characters in use in a text, and marks all occurrences in the current font page.
+Also returns a count of the set in the console.
 
-The script marks in green glyphs who belong to the latin-1 default charset. Glyphs outside of Latin-1 will be marked in red, and named with their unicode value. It is up to the user to rename them appropriately.
+Glyphs who belong to the current font's charset will be marked in green.
+
+Glyphs outside of this set will be marked in red. It is up to the user to check the properties of these new glyphs.
 
 ## usage
 

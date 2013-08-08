@@ -1,6 +1,7 @@
 import vanilla
 import mojo
-from mojo.UI import getDefaultCharacterSet, getCharacterSets
+from mojo.UI import getCharacterSets, getDefaultCharacterSet
+from fontTools import agl
 from sets import Set
 
 def extractCharset(text):
@@ -8,46 +9,37 @@ def extractCharset(text):
     for char in text:
         charset.add(char)
 
-    filteredCharset = filter(lambda c: c != u'\n' and c != u' ', charset)
+    removeSet = Set([u'\n', u'\r', u'\r\n', u' ', u"\u00A0"])
+
+    filteredCharset = charset - removeSet
     return filteredCharset
 
-def buildDictFromUnicodeToGlyphname():
-    "HACK: builds a dict from unicode to glyphnames"
-    defaultCharSet = getCharacterSets()[getDefaultCharacterSet()]
-    font = NewFont()
-    result = {}
-    for glyphName in defaultCharSet:
-        glyph = font.getGlyph(glyphName)
-        result[glyph.unicode] = glyphName
-    font.close(False)
-    return result
 
 def applyCharsetToFont(font, charset):
-    unhandledCharacters = []
+    notInFontGlyphNames = []
 
-    unicodeGlyphNamesDict = buildDictFromUnicodeToGlyphname()
-
-    for c in charset:
-        c_int = ord(c)
-        if c_int in unicodeGlyphNamesDict:
-            glyph = font.getGlyph(unicodeGlyphNamesDict[c_int])
+    for c in charset: 
+        gname = agl.UV2AGL[ord(c)]
+        
+        try:
+            glyph = font.getGlyph(gname)
             glyph.mark = (0,1, 0.2,1)
-        else:
-            glyph = font.newGlyph("%r" % c)
+        except:
+            glyph = font.newGlyph(gname)
             glyph.mark = (1, 0, 0, 1)
-            unhandledCharacters.append(c)
+            notInFontGlyphNames.append(gname)
     
-    return unhandledCharacters
+    return notInFontGlyphNames
 
 
 def textCharsetToFont(font):
     charset = extractCharset(window.textEditor.get())
-    unhandledCharacters = applyCharsetToFont(font, charset)
+    notInFontGlyphNames = applyCharsetToFont(font, charset)
     print "-------------"
     print "total unique characters", len(charset)
-    if len(unhandledCharacters) > 0:
-        print "characters marked in red are not in the latin-1 set, you must rename them appropriately"
-        print unhandledCharacters
+    if len(notInFontGlyphNames) > 0:
+        print "characters marked in red are not in the current font charset"
+        print notInFontGlyphNames
     
 def onSubmit(sender):
     currentFont = CurrentFont()
