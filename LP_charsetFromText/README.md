@@ -1,6 +1,6 @@
 # LP_charsetFromText.py
 
-extracts the set of characters in use in a text, and marks all occurrences in a new font page.
+extracts the set of characters in use in a text, and marks all occurrences in a new font page, which must be Latin-1 (default RF encoding).
 Also returns a count of the set.
 
 The script marks in green glyphs who belong to the latin-1 default charset. Glyphs outside of Latin-1 will be marked in red, and named with their unicode value. It is up to the user to rename them appropriately.
