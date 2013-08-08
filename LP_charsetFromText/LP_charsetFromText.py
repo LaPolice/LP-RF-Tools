@@ -1,6 +1,6 @@
 import vanilla
 import mojo
-
+from mojo.UI import getDefaultCharacterSet, getCharacterSets
 from sets import Set
 
 def extractCharset(text):
@@ -13,17 +13,12 @@ def extractCharset(text):
 
 def buildDictFromUnicodeToGlyphname():
     "HACK: builds a dict from unicode to glyphnames"
-    latin_1_set = mojo.UI.getCharacterSets()['Latin-1']
+    defaultCharSet = getCharacterSets()[getDefaultCharacterSet()]
     font = NewFont()
     result = {}
-    for glyphName in latin_1_set:
-        try:
-            glyph = font.getGlyph(glyphName)
-        except:
-            glyph = None
-            
-        if glyph != None:
-            result[glyph.unicode] = glyphName
+    for glyphName in defaultCharSet:
+        glyph = font.getGlyph(glyphName)
+        result[glyph.unicode] = glyphName
     font.close(False)
     return result
 
