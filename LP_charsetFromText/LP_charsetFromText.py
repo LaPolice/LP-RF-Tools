@@ -1,6 +1,5 @@
 import vanilla
 import mojo
-from mojo.UI import getCharacterSets, getDefaultCharacterSet
 from fontTools import agl
 from sets import Set
 
