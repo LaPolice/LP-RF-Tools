@@ -8,7 +8,7 @@ def extractCharset(text):
     for char in text:
         charset.add(char)
 
-    removeSet = Set([u'\n', u'\r', u'\r\n', u' ', u"\u00A0"])
+    removeSet = Set([u'\n', u'\r', u'\r\n', u' ', u"\u00A0", u"\uFEFF"])
 
     filteredCharset = charset - removeSet
     return filteredCharset
