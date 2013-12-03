@@ -9,14 +9,21 @@ from LP_versioning import *
 import unittest
 from collections import namedtuple
 
-MockFont = namedtuple("MockFont", ['path'])
+MockFont_T = namedtuple("MockFont_T", ['path', 'info'])
+MockInfo_T = namedtuple("MockInfo_T", ['versionMinor'])
+
+def MockFont(path=None, info=None):
+    return MockFont_T(path, info)
+
+def MockInfo(versionMinor=None):
+    return MockInfo_T(versionMinor)
 
 class TestExtractVersionFromFilename(unittest.TestCase):
     def test_itExtractVersionNumbersFromValidFilenames(self):
         self.assertEqual(1, extractVersionFromFilename('name-A001'))
         self.assertEqual(12, extractVersionFromFilename('name-Z012'))
 
-    def test_itReturnsMinusOneFromInvalidFormats(self):
+    def test_itReturnsMinusOneForInvalidFormats(self):
         self.assertEqual(-1, extractVersionFromFilename('name-a001'))
         self.assertEqual(-1, extractVersionFromFilename('name-A01'))
         self.assertEqual(-1, extractVersionFromFilename('nameA001'))
@@ -37,6 +44,11 @@ class TestGetFontVersionState(unittest.TestCase):
         result = getFontState(MockFont(path="/bla/file-b0001.ufo"))
         self.assertFailure(result, "font filename 'file-b0001' is invalid")
 
+    def test_itValidatesFontInfoMinorEqualsFilenameVersion(self):
+        info = MockInfo(versionMinor=2)
+        font = MockFont(path="/bla/file-B001.ufo", info=info)
+        result = getFontState(font)
+        self.assertFailure(result, "filename version(1) out of sync with info.versionMinor(2)")
 
 def main():
     unittest.main()
