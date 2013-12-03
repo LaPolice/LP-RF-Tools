@@ -10,13 +10,13 @@ import unittest
 from collections import namedtuple
 
 MockFont_T = namedtuple("MockFont_T", ['path', 'info'])
-MockInfo_T = namedtuple("MockInfo_T", ['versionMinor'])
+MockInfo_T = namedtuple("MockInfo_T", ['versionMinor', 'note'])
 
 def MockFont(path=None, info=None):
     return MockFont_T(path, info)
 
-def MockInfo(versionMinor=None):
-    return MockInfo_T(versionMinor)
+def MockInfo(versionMinor=None, note=None):
+    return MockInfo_T(versionMinor, note)
 
 class TestExtractVersionFromFilename(unittest.TestCase):
     def test_itExtractVersionNumbersFromValidFilenames(self):
@@ -49,6 +49,13 @@ class TestGetFontVersionState(unittest.TestCase):
         font = MockFont(path="/bla/file-B001.ufo", info=info)
         result = getFontState(font)
         self.assertFailure(result, "filename version(1) out of sync with info.versionMinor(2)")
+
+    def test_itValidatesFontInfoNoteIsNotBlank(self):
+        info = MockInfo(versionMinor=1, note="")
+        font = MockFont(path="/bla/file-B001.ufo", info=info)
+        result = getFontState(font)
+        self.assertFailure(result, "font info note is blank, please write a changelogMessage")
+
 
 def main():
     unittest.main()

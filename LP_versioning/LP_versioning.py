@@ -52,14 +52,17 @@ def validateFilenameFormat(font):
 def validateVersionsSynchronized(font):
     filenameVersion = extractVersionFromPath(font.path)
     versionMinor = font.info.versionMinor
-    print "pipo cerise", versionMinor, filenameVersion
 
     return successfullValidation() if versionMinor is filenameVersion else failedValidation("filename version(%i) out of sync with info.versionMinor(%i)" % (filenameVersion, versionMinor))
+
+def validateNoteNotBlank(font):
+    return successfullValidation() if font.info.note else failedValidation("font info note is blank, please write a changelogMessage")
 
 def getFontState(font):
     parseFontStateValidationFuncs = [validatePresenceOfFont, 
                                      validateFilenameFormat,
-                                     validateVersionsSynchronized]
+                                     validateVersionsSynchronized,
+                                     validateNoteNotBlank]
     validationsResult = runValidationsOnValue(font, parseFontStateValidationFuncs)
 
     if not validationsResult.success:
