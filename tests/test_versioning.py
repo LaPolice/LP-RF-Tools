@@ -8,6 +8,8 @@ sys.path.append(script_dir)
 from LP_versioning import *
 import unittest
 from collections import namedtuple
+import os
+
 
 MockFont_T = namedtuple("MockFont_T", ['path', 'info'])
 MockInfo_T = namedtuple("MockInfo_T", ['versionMinor', 'note'])
@@ -56,6 +58,17 @@ class TestGetFontVersionState(unittest.TestCase):
         result = getFontState(font)
         self.assertFailure(result, "font info note is blank, please write a changelogMessage")
 
+    def test_itValidatesNextVersionOfFileDoesNotExist(self):
+        realPathExists = os.path.exists
+        os.path.exists = lambda x : True
+
+        info = MockInfo(versionMinor=1, note="changelogMessage here")
+        font = MockFont(path="/bla/file-B001.ufo", info=info)
+
+        result = getFontState(font)
+        self.assertFailure(result, "the next font already exists /bla/file-B002.ufo")
+
+        os.path.exists = realPathExists
 
 def main():
     unittest.main()

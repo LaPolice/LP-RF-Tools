@@ -26,6 +26,10 @@ def extractVersionFromPath(path):
      _, filename, _ = explodePath(path)
      return extractVersionFromFilename(filename)
 
+def removeVersionFromFilename(filename):
+    """returns 'file-B' for 'file-B001'"""
+    return filename[:-3]
+
 def runValidationsOnValue(value, validations):
     operation = None
     for f in validations:
@@ -58,11 +62,20 @@ def validateVersionsSynchronized(font):
 def validateNoteNotBlank(font):
     return successfullValidation() if font.info.note else failedValidation("font info note is blank, please write a changelogMessage")
 
+def validateNextFontDoesNotExist(font):
+    directory, filename, extension = explodePath(font.path)
+    baseFileName = removeVersionFromFilename(filename)
+    nextVersion = font.info.versionMinor + 1
+    nextFontPath = os.path.join(directory, "%s%03d%s" % (baseFileName, nextVersion, extension))
+
+    return successfullValidation() if not os.path.exists(nextFontPath) else failedValidation("the next font already exists %s" % nextFontPath)
+
 def getFontState(font):
     parseFontStateValidationFuncs = [validatePresenceOfFont, 
                                      validateFilenameFormat,
                                      validateVersionsSynchronized,
-                                     validateNoteNotBlank]
+                                     validateNoteNotBlank,
+                                     validateNextFontDoesNotExist]
     validationsResult = runValidationsOnValue(font, parseFontStateValidationFuncs)
 
     if not validationsResult.success:
