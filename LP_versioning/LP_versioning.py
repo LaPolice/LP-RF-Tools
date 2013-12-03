@@ -22,6 +22,10 @@ def extractVersionFromFilename(filename):
     m = regex.match(filename)
     return int(m.groups()[0]) if m is not None else -1
 
+def extractVersionFromPath(path):
+     _, filename, _ = explodePath(path)
+     return extractVersionFromFilename(filename)
+
 def runValidationsOnValue(value, validations):
     operation = None
     for f in validations:
@@ -42,12 +46,11 @@ def validateFilenameFormat(font):
         return failedValidation("font filename 'None' is invalid")
 
     _, filename, _ = explodePath(font.path)
-    version = extractVersionFromFilename(filename)
+    version = extractVersionFromPath(font.path)
     return successfullValidation() if version > 0 else failedValidation("font filename '%s' is invalid" % filename)
 
 def validateVersionsSynchronized(font):
-    _, filename, _ = explodePath(font.path)
-    filenameVersion = extractVersionFromFilename(filename)
+    filenameVersion = extractVersionFromPath(font.path)
     versionMinor = font.info.versionMinor
     print "pipo cerise", versionMinor, filenameVersion
 
