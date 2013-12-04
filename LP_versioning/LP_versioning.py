@@ -1,5 +1,5 @@
 from collections import namedtuple
-import os, re, time
+import os, re, time, codecs
 
 def explodePath(path):
     "returns (directory, filename, extension)"
@@ -95,12 +95,12 @@ def logToFile(fontState):
     logFileName = "%s.changelog" % fontState.basename[:-2]
     logPath = os.path.join(directory,logFileName)
     if (os.path.exists(logPath)):
-        with open(logPath, 'r') as f:
+        with codecs.open(logPath, 'r', 'utf-8') as f:
             logContent = f.read()
     else:
-        logContent = ""
+        logContent = u""
 
-    newLogContent = "\n---------------------------\n"
+    newLogContent = u"\n---------------------------\n"
     newLogContent += time.strftime("#%d.%m.%Y (%H:%M)\n")
     newLogContent += "%s%s\n" % (filename, extension)
     newLogContent += "0.%03d\n" % fontState.versionMinor
@@ -109,7 +109,7 @@ def logToFile(fontState):
 
     logContent = newLogContent + logContent
 
-    with open(logPath, 'w') as f:
+    with codecs.open(logPath, 'w', 'utf-8') as f:
         f.write(logContent)
 
     message("operation completed\n" + newLogContent)
