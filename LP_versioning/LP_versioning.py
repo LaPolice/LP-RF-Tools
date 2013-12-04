@@ -1,8 +1,6 @@
 from collections import namedtuple
 import os, re
 
-
-
 def explodePath(path):
     "returns (directory, filename, extension)"
     p, extension = os.path.splitext(path)
@@ -10,6 +8,7 @@ def explodePath(path):
     return (directory, filename, extension)
 
 Validation = namedtuple("Validation", ['success', 'errorMessage'])
+FontState = namedtuple("FontState", ['directory', 'basename', 'versionMinor', 'note'])
 
 def successfullValidation():
     return Validation(success=True, errorMessage="")
@@ -57,7 +56,7 @@ def validateVersionsSynchronized(font):
     filenameVersion = extractVersionFromPath(font.path)
     versionMinor = font.info.versionMinor
 
-    return successfullValidation() if versionMinor is filenameVersion else failedValidation("filename version(%i) out of sync with info.versionMinor(%i)" % (filenameVersion, versionMinor))
+    return successfullValidation() if versionMinor is filenameVersion else failedValidation("filename version(%i) out of sync with info.versionMinor(%r)" % (filenameVersion, versionMinor))
 
 def validateNoteNotBlank(font):
     return successfullValidation() if font.info.note else failedValidation("font info note is blank, please write a changelogMessage")
@@ -78,8 +77,60 @@ def getFontState(font):
                                      validateNextFontDoesNotExist]
     validationsResult = runValidationsOnValue(font, parseFontStateValidationFuncs)
 
-    if not validationsResult.success:
+    if validationsResult.success:
+        directory, filename, _ = explodePath(font.path)
+        basename = removeVersionFromFilename(filename)
+        versionMinor = font.info.versionMinor
+        return (True, FontState(directory=directory, 
+                                basename=basename, 
+                                versionMinor=versionMinor,
+                                note=font.info.note))
+    else:
         return (False, validationsResult.errorMessage)
 
+
+def logToFile(fontState):
+    pass
+
+def commitVersion(font, fontState):
+    # increment version
+    newVersion = fontState.versionMinor + 1
+    font.info.versionMinor = newVersion
+    logToFile(fontState)
+    # clear info.note
+    font.info.note = None
+    #define newfilename and new path
+    filename = "%s%03d.ufo" % (fontState.basename, newVersion)
+    newPath = os.path.join(fontState.directory, filename)
+    font.save(newPath)
+        
+
+
+
+def main():
+    font = CurrentFont()
+    success, maybeFontState = getFontState(font)
+
+    if not success:
+        message("script validation failed(fix and try again):\n" + maybeFontState)
+    else:
+        commitVersion(font, maybeFontState)
+
+
+# scripts launch point
+
+
+runMain = True
+
+try:
+    import mojo    
+    from vanilla.dialogs import message
+    
+except:
+    print "not running in context of robofont"
+    runMain = False
+
+if runMain:
+    main()
     
 
