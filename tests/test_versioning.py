@@ -28,6 +28,7 @@ class TestExtractVersionFromFilename(unittest.TestCase):
     def test_itExtractVersionNumbersFromValidFilenames(self):
         self.assertEqual(1, extractVersionFromFilename('name-A001'))
         self.assertEqual(12, extractVersionFromFilename('name-Z012'))
+        self.assertEqual(12, extractVersionFromFilename('jung-regular-Z012'))
 
     def test_itReturnsMinusOneForInvalidFormats(self):
         self.assertEqual(-1, extractVersionFromFilename('name-a001'))
@@ -81,7 +82,11 @@ class TestGetFontVersionState(unittest.TestCase):
         font = MockFont(path="/bla/file-B001.ufo", info=info)
 
         result = getFontState(font)
-        expected = FontState(directory="/bla", basename="file-B", versionMinor=1, note="changelogMessage here")
+        expected = FontState(fullPath="/bla/file-B001.ufo",
+                             directory="/bla", 
+                             basename="file-B", 
+                             versionMinor=1, 
+                             note="changelogMessage here")
         self.assertEqual(result[1], expected)
 
         os.path.exists = realPathExists
@@ -90,22 +95,34 @@ class TestCommitVersion(unittest.TestCase):
     def test_itIncrementsVersionMinorOfFontArgument(self):
         info = MockInfo(versionMinor=1, note="changelogMessage here")
         font = MockFont(path="/bla/file-B001.ufo", info=info)
-        fontState = FontState(directory="/bla", basename="file-B", versionMinor=1, note="changelogMessage here")
-        commitVersion(font, fontState)
+        fontState = FontState(fullPath="/bla/file-B001.ufo",
+                              directory="/bla", 
+                              basename="file-B", 
+                              versionMinor=1, 
+                              note="changelogMessage here")
+        commitVersion(font, fontState, False)
         self.assertEqual(font.info.versionMinor, 2)
 
     def test_itClearsInfoNote(self):
         info = MockInfo(versionMinor=1, note="changelogMessage here")
         font = MockFont(path="/bla/file-B001.ufo", info=info)
-        fontState = FontState(directory="/bla", basename="file-B", versionMinor=1, note="changelogMessage here")
-        commitVersion(font, fontState)
+        fontState = FontState(fullPath="/bla/file-B001.ufo",
+                              directory="/bla", 
+                              basename="file-B", 
+                              versionMinor=1, 
+                              note="changelogMessage here")
+        commitVersion(font, fontState, False)
         self.assertEqual(font.info.note, None)
 
     def test_itSavesTheFontWithTheIncrementedName(self):
         info = MockInfo(versionMinor=1, note="changelogMessage here")
         font = MockFont(path="/bla/file-B001.ufo", info=info)
-        fontState = FontState(directory="/bla", basename="file-B", versionMinor=1, note="changelogMessage here")
-        commitVersion(font, fontState)
+        fontState = FontState(fullPath="/bla/file-B001.ufo",
+                              directory="/bla", 
+                              basename="file-B", 
+                              versionMinor=1, 
+                              note="changelogMessage here")
+        commitVersion(font, fontState, False)
         self.assertEqual(font.path, "/bla/file-B002.ufo")
 
 

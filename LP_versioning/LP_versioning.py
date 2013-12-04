@@ -1,5 +1,5 @@
 from collections import namedtuple
-import os, re
+import os, re, time
 
 def explodePath(path):
     "returns (directory, filename, extension)"
@@ -8,7 +8,7 @@ def explodePath(path):
     return (directory, filename, extension)
 
 Validation = namedtuple("Validation", ['success', 'errorMessage'])
-FontState = namedtuple("FontState", ['directory', 'basename', 'versionMinor', 'note'])
+FontState = namedtuple("FontState", ['fullPath', 'directory', 'basename', 'versionMinor', 'note'])
 
 def successfullValidation():
     return Validation(success=True, errorMessage="")
@@ -81,7 +81,8 @@ def getFontState(font):
         directory, filename, _ = explodePath(font.path)
         basename = removeVersionFromFilename(filename)
         versionMinor = font.info.versionMinor
-        return (True, FontState(directory=directory, 
+        return (True, FontState(fullPath=font.path,
+                                directory=directory, 
                                 basename=basename, 
                                 versionMinor=versionMinor,
                                 note=font.info.note))
@@ -90,19 +91,42 @@ def getFontState(font):
 
 
 def logToFile(fontState):
-    pass
+    directory, filename, extension = explodePath(fontState.fullPath)
+    logFileName = "%s.changelog" % fontState.basename[:-2]
+    logPath = os.path.join(directory,logFileName)
+    if (os.path.exists(logPath)):
+        with open(logPath, 'r') as f:
+            logContent = f.read()
+    else:
+        logContent = ""
 
-def commitVersion(font, fontState):
+    newLogContent = "\n---------------------------\n"
+    newLogContent += time.strftime("#%d.%m.%Y (%H:%M)\n")
+    newLogContent += "%s%s\n" % (filename, extension)
+    newLogContent += "0.%03d\n" % fontState.versionMinor
+    newLogContent += "\n"
+    newLogContent += fontState.note
+
+    logContent = newLogContent + logContent
+
+    with open(logPath, 'w') as f:
+        f.write(logContent)
+
+    message("operation completed\n" + newLogContent)
+
+
+def commitVersion(font, fontState, log=True):
     # increment version
     newVersion = fontState.versionMinor + 1
     font.info.versionMinor = newVersion
-    logToFile(fontState)
     # clear info.note
     font.info.note = None
     #define newfilename and new path
     filename = "%s%03d.ufo" % (fontState.basename, newVersion)
     newPath = os.path.join(fontState.directory, filename)
     font.save(newPath)
+    if log:
+        logToFile(fontState)
         
 
 
