@@ -1,7 +1,7 @@
 # LP_versioning
 
-simple versioning system supporting _laPolice_ type development process.
-The script validates the current state of the font. If it is valid, it will save the file as an incremented verison and will update a .changelog file with the new changes.
+Simple versioning system supporting _LaPolice_ type development process.
+The script validates the current state of the font. If it is valid, it will save the file as an incremented version and will update a changelog.md file with the new changes.
 
 ## validations
 
