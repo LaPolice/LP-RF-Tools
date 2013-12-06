@@ -99,13 +99,13 @@ def logToFile(fontState):
             logContent = f.read()
     else:
         logContent = u""
-
-    newLogContent = u"\n---------------------------\n"
-    newLogContent += time.strftime("#%d.%m.%Y (%H:%M)\n")
-    newLogContent += "%s%s\n" % (filename, extension)
-    newLogContent += "0.%03d\n" % fontState.versionMinor
-    newLogContent += "\n"
-    newLogContent += fontState.note
+    
+    newLogContent = time.strftime("### %d.%m.%Y (%H:%M)  \n")
+    newLogContent += "**%s%s**  \n" % (filename, extension)
+    newLogContent += "version: 0.%03d  \n" % fontState.versionMinor
+    newLogContent += "  \n"
+    newLogContent += fontState.note + "  \n"
+    newLogContent += u"\n---------------------------\n"
 
     logContent = newLogContent + logContent
 
