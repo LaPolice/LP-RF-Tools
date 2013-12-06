@@ -92,7 +92,7 @@ def getFontState(font):
 
 def logToFile(fontState):
     directory, filename, extension = explodePath(fontState.fullPath)
-    logFileName = "%s.changelog" % fontState.basename[:-2]
+    logFileName = "%schangelog.md" % fontState.basename[:-1]
     logPath = os.path.join(directory,logFileName)
     if (os.path.exists(logPath)):
         with codecs.open(logPath, 'r', 'utf-8') as f:
