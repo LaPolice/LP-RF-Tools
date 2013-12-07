@@ -56,17 +56,11 @@ class TestGetFontVersionState(unittest.TestCase):
         result = getFontState(font)
         self.assertFailure(result, "filename version(1) out of sync with info.versionMinor(2)")
 
-    def test_itValidatesFontInfoNoteIsNotBlank(self):
-        info = MockInfo(versionMinor=1, note="")
-        font = MockFont(path="/bla/file-B001.ufo", info=info)
-        result = getFontState(font)
-        self.assertFailure(result, "font info note is blank, please write a changelogMessage")
-
     def test_itValidatesNextVersionOfFileDoesNotExist(self):
         realPathExists = os.path.exists
         os.path.exists = lambda x : True
 
-        info = MockInfo(versionMinor=1, note="changelogMessage here")
+        info = MockInfo(versionMinor=1)
         font = MockFont(path="/bla/file-B001.ufo", info=info)
 
         result = getFontState(font)
@@ -78,15 +72,14 @@ class TestGetFontVersionState(unittest.TestCase):
         realPathExists = os.path.exists
         os.path.exists = lambda x : False
 
-        info = MockInfo(versionMinor=1, note="changelogMessage here")
+        info = MockInfo(versionMinor=1)
         font = MockFont(path="/bla/file-B001.ufo", info=info)
 
         result = getFontState(font)
         expected = FontState(fullPath="/bla/file-B001.ufo",
                              directory="/bla", 
                              basename="file-B", 
-                             versionMinor=1, 
-                             note="changelogMessage here")
+                             versionMinor=1)
         self.assertEqual(result[1], expected)
 
         os.path.exists = realPathExists
@@ -98,8 +91,7 @@ class TestCommitVersion(unittest.TestCase):
         fontState = FontState(fullPath="/bla/file-B001.ufo",
                               directory="/bla", 
                               basename="file-B", 
-                              versionMinor=1, 
-                              note="changelogMessage here")
+                              versionMinor=1)
         commitVersion(font, fontState, False)
         self.assertEqual(font.info.versionMinor, 2)
 
@@ -109,8 +101,7 @@ class TestCommitVersion(unittest.TestCase):
         fontState = FontState(fullPath="/bla/file-B001.ufo",
                               directory="/bla", 
                               basename="file-B", 
-                              versionMinor=1, 
-                              note="changelogMessage here")
+                              versionMinor=1)
         commitVersion(font, fontState, False)
         self.assertEqual(font.info.note, None)
 
@@ -120,8 +111,7 @@ class TestCommitVersion(unittest.TestCase):
         fontState = FontState(fullPath="/bla/file-B001.ufo",
                               directory="/bla", 
                               basename="file-B", 
-                              versionMinor=1, 
-                              note="changelogMessage here")
+                              versionMinor=1)
         commitVersion(font, fontState, False)
         self.assertEqual(font.path, "/bla/file-B002.ufo")
 

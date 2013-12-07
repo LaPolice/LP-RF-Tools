@@ -8,7 +8,7 @@ def explodePath(path):
     return (directory, filename, extension)
 
 Validation = namedtuple("Validation", ['success', 'errorMessage'])
-FontState = namedtuple("FontState", ['fullPath', 'directory', 'basename', 'versionMinor', 'note'])
+FontState = namedtuple("FontState", ['fullPath', 'directory', 'basename', 'versionMinor'])
 
 def successfullValidation():
     return Validation(success=True, errorMessage="")
@@ -58,9 +58,6 @@ def validateVersionsSynchronized(font):
 
     return successfullValidation() if versionMinor is filenameVersion else failedValidation("filename version(%i) out of sync with info.versionMinor(%r)" % (filenameVersion, versionMinor))
 
-def validateNoteNotBlank(font):
-    return successfullValidation() if font.info.note else failedValidation("font info note is blank, please write a changelogMessage")
-
 def validateNextFontDoesNotExist(font):
     directory, filename, extension = explodePath(font.path)
     baseFileName = removeVersionFromFilename(filename)
@@ -73,7 +70,6 @@ def getFontState(font):
     parseFontStateValidationFuncs = [validatePresenceOfFont, 
                                      validateFilenameFormat,
                                      validateVersionsSynchronized,
-                                     validateNoteNotBlank,
                                      validateNextFontDoesNotExist]
     validationsResult = runValidationsOnValue(font, parseFontStateValidationFuncs)
 
@@ -84,8 +80,7 @@ def getFontState(font):
         return (True, FontState(fullPath=font.path,
                                 directory=directory, 
                                 basename=basename, 
-                                versionMinor=versionMinor,
-                                note=font.info.note))
+                                versionMinor=versionMinor))
     else:
         return (False, validationsResult.errorMessage)
 
