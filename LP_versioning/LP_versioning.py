@@ -85,7 +85,7 @@ def getFontState(font):
         return (False, validationsResult.errorMessage)
 
 
-def logToFile(fontState):
+def logToFile(fontState, infoNoteContent):
     directory, filename, extension = explodePath(fontState.fullPath)
     logFileName = "%schangelog.md" % fontState.basename[:-1]
     logPath = os.path.join(directory,logFileName)
@@ -99,7 +99,7 @@ def logToFile(fontState):
     newLogContent += "**%s%s**  \n" % (filename, extension)
     newLogContent += "version: 0.%03d  \n" % fontState.versionMinor
     newLogContent += "  \n"
-    newLogContent += fontState.note + "  \n"
+    newLogContent += infoNoteContent + "  \n"
     newLogContent += u"\n---------------------------\n"
 
     logContent = newLogContent + logContent
@@ -115,14 +115,38 @@ def commitVersion(font, fontState, log=True):
     newVersion = fontState.versionMinor + 1
     font.info.versionMinor = newVersion
     # clear info.note
+    infoNoteContent = font.info.note
     font.info.note = None
     #define newfilename and new path
     filename = "%s%03d.ufo" % (fontState.basename, newVersion)
     newPath = os.path.join(fontState.directory, filename)
+    print "saving new font: %s" % newPath
     font.save(newPath)
     if log:
-        logToFile(fontState)
-        
+        logToFile(fontState, infoNoteContent)
+
+
+def handleInfoNoteUpdate(window, font, fontState):
+    font.info.note = window.textEditor.get()
+    window.close()
+
+    if font.info.note == "":
+        message("info note is blank, operation aborted")
+    else:
+        print "saving changes on font: %s" % font.path
+        font.copy().save(font.path)
+        commitVersion(font, fontState)
+
+
+def userChecksInfoNote(font, fontState):
+    window = Window((400, 400),"edit info.note", minSize=(100, 100))
+    window.textEditor = TextEditor(posSize=(0, 0, 400, 300))
+    noteContent = font.info.note or ""
+    window.textEditor.set(noteContent)
+    window.updateNoteButton = SquareButton(posSize=(0, 350, 100, 50), title="commit", callback=lambda x : handleInfoNoteUpdate(window, font, fontState))
+    window.cancelButton = SquareButton(posSize=(110, 350, 130, 50), title="cancel operation", callback=lambda x: window.close())
+    window.open()
+
 
 
 
@@ -133,18 +157,16 @@ def main():
     if not success:
         message("script validation failed(fix and try again):\n" + maybeFontState)
     else:
-        commitVersion(font, maybeFontState)
+        userChecksInfoNote(font, maybeFontState)
 
-
-# scripts launch point
-
+# script launch point
 
 runMain = True
 
 try:
     import mojo    
     from vanilla.dialogs import message
-    
+    from vanilla import Window, SquareButton, TextEditor
 except:
     print "not running in context of robofont"
     runMain = False
