@@ -126,13 +126,11 @@ def commitVersion(font, fontState, log=True):
         logToFile(fontState, infoNoteContent)
 
 
-def handleInfoNoteUpdate(window, font, fontState):
-    font.info.note = window.textEditor.get()
-    window.close()
-
-    if font.info.note == "":
+def commitInfoNote(infoNoteContent, font, fontState):
+    if infoNoteContent == "":
         message("info note is blank, operation aborted")
     else:
+        font.info.note = infoNoteContent
         print "saving changes on font: %s" % font.path
         font.copy().save(font.path)
         commitVersion(font, fontState)
@@ -143,7 +141,11 @@ def userChecksInfoNote(font, fontState):
     window.textEditor = TextEditor(posSize=(0, 0, 400, 300))
     noteContent = font.info.note or ""
     window.textEditor.set(noteContent)
-    window.updateNoteButton = SquareButton(posSize=(0, 350, 100, 50), title="commit", callback=lambda x : handleInfoNoteUpdate(window, font, fontState))
+    def handleCommit(s):
+        editorContent = window.textEditor.get()
+        window.close()
+        commitInfoNote(editorContent, font, fontState)
+    window.updateNoteButton = SquareButton(posSize=(0, 350, 100, 50), title="commit", callback=handleCommit)
     window.cancelButton = SquareButton(posSize=(110, 350, 130, 50), title="cancel operation", callback=lambda x: window.close())
     window.open()
 
