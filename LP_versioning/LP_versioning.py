@@ -120,7 +120,7 @@ def commitVersion(font, fontState, log=True):
     #define newfilename and new path
     filename = "%s%03d.ufo" % (fontState.basename, newVersion)
     newPath = os.path.join(fontState.directory, filename)
-    print "saving new font: %s" % newPath
+    print ("saving new font: %s" % newPath)
     font.save(newPath)
     if log:
         logToFile(fontState, infoNoteContent)
@@ -131,7 +131,7 @@ def commitInfoNote(infoNoteContent, font, fontState):
         message("info note is blank, operation aborted")
     else:
         font.info.note = infoNoteContent
-        print "saving changes on font: %s" % font.path
+        print ("saving changes on font: %s" % font.path)
         font.copy().save(font.path)
         commitVersion(font, fontState)
 
@@ -170,7 +170,7 @@ try:
     from vanilla.dialogs import message
     from vanilla import Window, SquareButton, TextEditor
 except:
-    print "not running in context of robofont"
+    print("not running in context of robofont")
     runMain = False
 
 if runMain:
