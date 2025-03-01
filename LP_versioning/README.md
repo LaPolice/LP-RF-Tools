@@ -18,7 +18,7 @@ The current version is saved (and ideally should never be saved again)
 A new version of the font is saved and made available for further development. The new font has its file name and version minor field incremented and its info.note field cleared.
 
 ### 5. update changelog
-A changelog.md file is updated with a version header and the content of info.note. This file resides in the same folder as the font. It will be created if necessary.
+A changelog.md file is updated with a version header and the content of info.note. This file resides in the same folder as the font in a folder named `changelogs`. It will be created if necessary.
 
 ## validations
 
