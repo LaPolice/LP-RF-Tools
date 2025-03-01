@@ -84,11 +84,18 @@ def getFontState(font):
     else:
         return (False, validationsResult.errorMessage)
 
+def ensureDirectoryExists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 
 def logToFile(fontState, infoNoteContent):
     directory, filename, extension = explodePath(fontState.fullPath)
     logFileName = "%schangelog.md" % fontState.basename[:-1]
-    logPath = os.path.join(directory,logFileName)
+    changelogsFolderPath = os.path.join(directory, "changelogs")
+    ensureDirectoryExists(changelogsFolderPath)
+    logPath = os.path.join(changelogsFolderPath, logFileName)
+    
     if (os.path.exists(logPath)):
         with codecs.open(logPath, 'r', 'utf-8') as f:
             logContent = f.read()
