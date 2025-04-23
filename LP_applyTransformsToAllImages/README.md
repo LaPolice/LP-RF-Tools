@@ -1,4 +1,4 @@
-# LP_applyImageTransformToAll
+# Apply transforms to all images
 
 this script has two possible behaviors depending on the available api (robofont version).
 
