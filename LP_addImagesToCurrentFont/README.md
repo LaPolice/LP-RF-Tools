@@ -1,4 +1,4 @@
-# LP_addImagesToCurrentGlyph
+# Add images to current font
 
 takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window.
 
