@@ -1,8 +1,8 @@
 # Add images to current font
 
-takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window.
+Takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window.
 
-the script operates on the current font. On execution, a folder requester is opened to allow the user to point to the location of the images to be imported.
+The script operates on the current font. On execution, a folder requester is opened to allow the user to point to the location of the images to be imported.
 
 The image files should be named as follows:
 
