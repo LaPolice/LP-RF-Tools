@@ -1,6 +1,6 @@
 # LP_charsetFromText.py
 
-extracts the set of characters in use in a text, and marks all occurrences in the current font page.
+Extracts the set of characters in use in a text, and marks all occurrences in the current font page.
 Also returns a count of the set in the console.
 
 Glyphs who belong to the current font's charset will be marked in green.
