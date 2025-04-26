@@ -1,6 +1,6 @@
 # LP_versioning
 
-Simple versioning system supporting the _LaPolice_ type development process.
+Simple versioning system supporting the _La Police_ type development process.
 
 ## process
 
