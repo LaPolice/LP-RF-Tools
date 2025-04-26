@@ -1,6 +1,6 @@
 # Apply transforms to all images
 
-this script has two possible behaviors depending on the available api (robofont version).
+This script has two possible behaviors depending on the available api (robofont version).
 
 It will use the settable transform property if available (robofont >= Version 1.4b (built 1307152301)). This is preferable since it copies the transformation instead of applying it on top of the existing value. 
 
