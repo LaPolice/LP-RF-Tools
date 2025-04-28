@@ -1,3 +1,15 @@
+# menuTitle: Character set from text
+# script version: 1.0
+# description: Extracts the set of characters in use in a text, and marks all occurrences in the current font page. Also returns a count of the set in the console.
+# developer: La Police (David Hodgetts)
+# developer URL: www.lapolice.ch
+# tags: 
+# bug report, feature request: https://github.com/LaPolice (file an issue)
+# software compatibility:
+# RoboFont 1.x: working (1.8.6)
+# RoboFont 3.x: not tested
+# RoboFont 4.x: not working (4.5)
+
 import vanilla
 import mojo
 from fontTools import agl

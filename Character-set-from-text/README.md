@@ -1,4 +1,4 @@
-# LP_charsetFromText.py
+# Character set from text
 
 Extracts the set of characters in use in a text, and marks all occurrences in the current font page.
 Also returns a count of the set in the console.

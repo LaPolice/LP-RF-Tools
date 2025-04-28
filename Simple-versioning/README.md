@@ -1,4 +1,4 @@
-# LP_versioning
+# Simple versioning
 
 Simple versioning system supporting the _La Police_ type development process.
 
