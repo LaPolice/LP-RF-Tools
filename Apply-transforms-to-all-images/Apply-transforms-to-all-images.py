@@ -1,3 +1,15 @@
+# menuTitle: Apply transforms to all images
+# description: Applies transformations to images. Consult the readme file, this script has two possible behaviors depending on the available api (robofont version).
+# script version: 1.0
+# developer: La Police (David Hodgetts)
+# developer URL: www.lapolice.ch
+# tags: 
+# bug report, feature request: https://github.com/LaPolice (file an issue)
+# software compatibility:
+# RoboFont 1.x: working (1.8.6)
+# RoboFont 3.x: not tested
+# RoboFont 4.x: not working (4.5)
+
 import mojo
 
 TARGET_LAYER_NAME = "imported_images"

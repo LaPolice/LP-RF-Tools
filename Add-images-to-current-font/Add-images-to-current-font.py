@@ -1,3 +1,14 @@
+# menuTitle: Add images to current font
+# script version: 1.0
+# description: Takes a folder of bitmaps (jpg, tif or png) and loads them in their associated glyph window.
+# developer: La Police (David Hodgetts)
+# developer URL: www.lapolice.ch
+# tags: 
+# bug report, feature request: https://github.com/LaPolice (file an issue)
+# software compatibility:
+# RoboFont 1.x: working (1.8.6)
+# RoboFont 3.x: not tested
+# RoboFont 4.x: not working (4.5)
 
 import os, re, sys, operator
 from os.path import join, isfile

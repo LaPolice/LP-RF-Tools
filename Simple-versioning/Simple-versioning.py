@@ -1,3 +1,15 @@
+# menuTitle: Simple versioning
+# script version: 1.1
+# description: Simple versioning system supporting the La Police type development process.
+# developer: La Police (David Hodgetts)
+# developer URL: www.lapolice.ch
+# tags: 
+# bug report, feature request: https://github.com/LaPolice (file an issue)
+# software compatibility:
+# RoboFont 1.x: working (1.8.6)
+# RoboFont 3.x: not tested
+# RoboFont 4.x: working (4.5)
+
 from collections import namedtuple
 import os, re, time, codecs
 
