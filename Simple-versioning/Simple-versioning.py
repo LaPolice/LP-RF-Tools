@@ -183,7 +183,7 @@ class SimpleVersioning(ezui.WindowController):
         
         * HorizontalStack    @buttonStack
         > (Update Note)      @updateButton
-        > (Commit)           @commitButton
+        > (New Version)      @commitButton
         
         ---
         ===
@@ -210,7 +210,6 @@ class SimpleVersioning(ezui.WindowController):
             defaultButton="commitButton",
             parent=parent,
         )
-        self.w.getItem("commitButton").setTitle(f"Commit v{self.fontState.versionMinor}")
         self.textEditor = self.w.getItem("textEditor")
         if self.font.info.note:
             self.textEditor.set(self.font.info.note)
