@@ -1,4 +1,4 @@
-# La Police Robofont scripts
+# La Police RoboFont scripts
 
 A series of scripts developed in collaboration between a programmer (David Hodgetts) and a type designer (Mathieu Christe), published by La Police Type Foundry.
 
