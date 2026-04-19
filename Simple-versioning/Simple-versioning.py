@@ -147,9 +147,11 @@ def commitVersion(font, fontState, log=True):
     filename = "%s%03d.ufo" % (fontState.basename, newVersion)
     newPath = os.path.join(fontState.directory, filename)
     print ("Saving new font: %s" % newPath)
-    font.save(newPath)
+    newFont = font.copy()
+    newFont.templateGlyphOrder = font.templateGlyphOrder
+    newFont.save(newPath)
     font.close()
-    font = OpenFont(newPath)
+    newFont = OpenFont(newPath)
     if log:
         logToFile(fontState, infoNoteContent)
 
